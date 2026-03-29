@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Pro Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-2v-lsJt7.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B_JGgfWH.css">
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <button id="themeToggle" class="theme-toggle">
+                <i class="fas fa-moon"></i> Dark Mode
+            </button>
+            <div id="userInfo" class="user-info" style="display: none;">
+                <span id="userEmail"></span>
+                <button id="logoutBtn" class="auth-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-section active">
+            <h2><i class="fas fa-dumbbell"></i> Fitness Pro</h2>
+            <p style="margin-bottom: 20px; opacity: 0.8;">Sign in to track your progress</p>
+            <div class="input-group">
+                <input type="email" id="authEmail" placeholder="Email Address">
+            </div>
+            <div class="input-group">
+                <input type="password" id="authPassword" placeholder="Password">
+            </div>
+            <button id="loginBtn" class="btn btn-primary">Log In</button>
+            <button id="signupBtn" class="btn">Sign Up</button>
+            <p id="authError" style="color: var(--danger); margin-top: 15px; display: none;"></p>
+        </div>
+
+        <!-- Main App -->
+        <div id="appSection" class="app-section">
+            <div class="header">
+                <h1><i class="fas fa-dumbbell"></i> Fitness Pro Tracker</h1>
+                <p>Premium tracking for your workouts, meals, and progress</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </button>
+                <button class="tab-btn" data-tab="workout">
+                    <i class="fas fa-dumbbell"></i> Workouts
+                </button>
+                <button class="tab-btn" data-tab="diet">
+                    <i class="fas fa-utensils"></i> Diet
+                </button>
+                <button class="tab-btn" data-tab="progress">
+                    <i class="fas fa-chart-area"></i> Progress
+                </button>
+                <button class="tab-btn" data-tab="goals">
+                    <i class="fas fa-bullseye"></i> Goals
+                </button>
+            </div>
+
+            <!-- Loader -->
+            <div id="loader" class="loader">
+                <i class="fas fa-spinner fa-spin"></i> Loading your data...
+            </div>
+
+            <div id="appContent">
+                <!-- Dashboard -->
+                <div id="dashboard" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalCalories">0</div>
+                            <div class="stat-label">Calories Today</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalWorkouts">0</div>
+                            <div class="stat-label">Workouts This Week</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalWeightLifted">0</div>
+                            <div class="stat-label">Weight Lifted (kg)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="currentWeight">--</div>
+                            <div class="stat-label">Current Weight (kg)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workout Tracker -->
+                <div id="workout" class="tab-content">
+                    <div class="input-group">
+                        <label>Exercise</label>
+                        <input type="text" id="workoutExercise" placeholder="e.g., Bench Press">
+                    </div>
+                    <div class="input-group">
+                        <label>Sets</label>
+                        <input type="number" id="workoutSets" placeholder="3" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Reps</label>
+                        <input type="number" id="workoutReps" placeholder="10" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" id="workoutWeight" placeholder="60" step="0.5" min="0">
+                    </div>
+                    <button class="btn btn-primary" id="addWorkoutBtn">
+                        <i class="fas fa-plus"></i> Add Workout
+                    </button>
+                    <h3 style="margin: 30px 0 20px 0;">Recent Workouts</h3>
+                    <div id="workoutLog"></div>
+                </div>
+
+                <!-- Diet Tracker -->
+                <div id="diet" class="tab-content">
+                    <div class="ai-calculator" style="margin-bottom: 30px; padding: 20px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--primary); border-radius: 15px; box-shadow: var(--neon-glow);">
+                        <h3 style="margin-bottom: 15px; color: var(--primary);"><i class="fas fa-magic"></i> AI Macronutrient Calculator</h3>
+                        <div class="input-group" style="margin-bottom: 15px;">
+                            <input type="text" id="aiFoodInput" placeholder="Describe your meal (e.g., '2 scrambled eggs with a slice of toast')">
+                        </div>
+                        <button class="btn btn-primary" id="aiCalculateBtn" style="width: 100%;">
+                            <i class="fas fa-robot"></i> Calculate Macros
+                        </button>
+                        <p id="aiLoading" style="display: none; color: var(--primary); margin-top: 10px; text-align: center;"><i class="fas fa-spinner fa-spin"></i> Analyzing meal...</p>
+                    </div>
+
+                    <h3 style="margin-bottom: 20px;">Manual Entry</h3>
+                    <div class="input-group">
+                        <label>Food Item</label>
+                        <input type="text" id="foodItem" placeholder="e.g., Chicken Breast 200g">
+                    </div>
+                    <div class="input-group">
+                        <label>Calories</label>
+                        <input type="number" id="foodCalories" placeholder="250" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Protein (g)</label>
+                        <input type="number" id="foodProtein" placeholder="30" step="0.1" min="0">
+                    </div>
+                    <button class="btn btn-primary" id="addFoodBtn">
+                        <i class="fas fa-plus"></i> Add Food
+                    </button>
+                    <h3 style="margin: 30px 0 20px 0;">Today's Meals</h3>
+                    <div id="foodLog"></div>
+                </div>
+
+                <!-- Progress (Weight Chart) -->
+                <div id="progress" class="tab-content">
+                    <div class="input-group">
+                        <label>Log Weight (kg)</label>
+                        <input type="number" id="weightInput" placeholder="75" step="0.1" min="0">
+                    </div>
+                    <button class="btn btn-primary" id="addWeightBtn" style="margin-bottom: 30px;">
+                        <i class="fas fa-weight"></i> Log Weight
+                    </button>
+                    
+                    <h3 style="margin-bottom: 20px;">Weight & Strength Progress</h3>
+                    <div class="chart-container">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Goals -->
+                <div id="goals" class="tab-content">
+                    <div class="goal-section">
+                        <div>
+                            <h3>Daily Calorie Goal</h3>
+                            <div class="input-group" style="margin-top: 15px;">
+                                <input type="number" id="calorieGoal" placeholder="2000">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="calorieProgress" style="width: 0%"></div>
+                            </div>
+                            <button class="btn btn-primary" id="setCalorieGoalBtn" style="margin-top: 15px;">Set Goal</button>
+                        </div>
+                        <div>
+                            <h3>Weekly Workout Goal</h3>
+                            <div class="input-group" style="margin-top: 15px;">
+                                <input type="number" id="workoutGoal" placeholder="5">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="workoutProgress" style="width: 0%"></div>
+                            </div>
+                            <button class="btn btn-primary" id="setWorkoutGoalBtn" style="margin-top: 15px;">Set Goal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
